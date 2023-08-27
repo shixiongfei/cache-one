@@ -1,0 +1,40 @@
+{
+  "name": "cache-one",
+  "version": "1.0.0",
+  "description": "A cache library only remembers the last call that matches the parameter key.",
+  "main": "./lib/src/index.js",
+  "types": "./lib/src/index.d.ts",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "tsc && node lib/test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shixiongfei/cache-one.git"
+  },
+  "keywords": [
+    "memoize",
+    "memoizer",
+    "cache",
+    "caching",
+    "memoization"
+  ],
+  "author": "shixiongfei",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/shixiongfei/cache-one/issues"
+  },
+  "homepage": "https://github.com/shixiongfei/cache-one#readme",
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.2",
+    "typescript": "^5.2.2"
+  }
+}
