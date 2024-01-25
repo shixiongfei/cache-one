@@ -2,17 +2,16 @@
   "name": "cache-one",
   "version": "1.0.1",
   "description": "A cache library only remembers the last call that matches the parameter key.",
-  "main": "./lib/src/index.js",
-  "types": "./lib/src/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/",
-    "src/",
-    "test/"
+    "src/"
   ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "tsc && node lib/test/test.js"
+    "test": "tsc && node lib/index.test.js"
   },
   "repository": {
     "type": "git",
