@@ -1,6 +1,6 @@
 {
   "name": "cache-one",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A cache library only remembers the last call that matches the parameter key.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
