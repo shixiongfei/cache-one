@@ -9,21 +9,52 @@
  * https://github.com/shixiongfei/cache-one
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const cacheOne = <T extends (...args: readonly any[]) => any>(
-  keyFn: (...v: Parameters<T>) => string,
-  fn: T,
-): T => {
-  const cached: { key?: string; data?: ReturnType<T> } = {};
-  const cachedFn = (...args: Parameters<T>) => {
+const isPromise = <T>(value: T | Promise<T>): value is Promise<T> =>
+  typeof value === "object" && value instanceof Promise;
+
+export const cacheOne = <T, P extends Array<unknown>>(
+  keyFn: (...args: P) => string,
+  fn: (...args: P) => T,
+) => {
+  const cached: { value?: { key: string; data: T } } = {};
+
+  const cachedFn = (...args: P): T => {
     const key = keyFn.apply(this, args);
-    if (key !== cached.key) {
-      cached.key = key;
-      cached.data = fn.apply(this, args);
+
+    if (!cached.value) {
+      cached.value = { key, data: fn.apply(this, args) };
+    } else if (key !== cached.value.key) {
+      cached.value.key = key;
+      cached.value.data = fn.apply(this, args);
     }
-    return cached.data as ReturnType<T>;
+
+    return cached.value.data;
   };
-  return cachedFn as T;
+
+  return cachedFn;
 };
 
-export default cacheOne;
+export const cacheOneAsync = <T, P extends Array<unknown>>(
+  keyFn: (...args: P) => Promise<string> | string,
+  fn: (...args: P) => Promise<T> | T,
+) => {
+  const cached: { value?: { key: string; data: T } } = {};
+
+  const cachedFn = async (...args: P): Promise<T> => {
+    const keyGen = keyFn.apply(this, args);
+    const key = isPromise(keyGen) ? await keyGen : keyGen;
+
+    if (!cached.value) {
+      const data = fn.apply(this, args);
+      cached.value = { key, data: isPromise(data) ? await data : data };
+    } else if (key !== cached.value.key) {
+      const data = fn.apply(this, args);
+      cached.value.key = key;
+      cached.value.data = isPromise(data) ? await data : data;
+    }
+
+    return cached.value.data;
+  };
+
+  return cachedFn;
+};
